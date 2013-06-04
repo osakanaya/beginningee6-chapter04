@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 永続性ユニットの定義 -->
+<persistence version="1.0"
+	xmlns="http://java.sun.com/xml/ns/persistence">
+	<!--  
+		永続性ユニットの名前を定義
+
+		また、JavaSE環境ではJavaEE環境（のアプリケーションサーバ）で
+		動作するアプリケーションのようにアプリケーションサーバの
+		トランザクション管理機能を使用することはできず、アプリケーション
+		自身がトランザクションを管理する必要があるため、
+		transaction-type属性にRESOURCE_LOCALを指定する。
+	-->
+	<persistence-unit name="test" transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+		<!-- 
+			JPAによってデータベーステーブルにマッピングする
+			エンティティのクラス名を明示的に指定する。 
+		-->
+		<class>org.beginningee6.book.chapter04.ex01.Book01</class>
+
+		<class>org.beginningee6.book.chapter04.ex02.Customer02</class>
+		<class>org.beginningee6.book.chapter04.ex02.Address02</class>
+
+		<class>org.beginningee6.book.chapter04.ex03.Customer03</class>
+		<class>org.beginningee6.book.chapter04.ex03.Address03</class>
+
+		<class>org.beginningee6.book.chapter04.ex04.Customer04</class>
+		<class>org.beginningee6.book.chapter04.ex04.Address04</class>
+
+		<class>org.beginningee6.book.chapter04.ex05.Customer05</class>
+		<class>org.beginningee6.book.chapter04.ex05.Address05</class>
+		<class>org.beginningee6.book.chapter04.ex05.Book05</class>
+
+		<class>org.beginningee6.book.chapter04.ex06.Book06</class>
+
+		<properties>
+        	<!-- 
+        		永続性ユニットが起動した時のマッピングテーブルの扱いを
+        		設定する。
+        		ここでは「create」を定義している。
+        		
+        		「create」を定義すると、永続性ユニットが起動した時に
+        		JPAのソースコードからエンティティへマッピングされる
+        		テーブルがすでに存在する場合はこれらのテーブルを削除し、
+        		ソースコードに書かれたエンティティマッピングの定義に
+        		基づき、テーブルが再作成される。
+        	-->
+			<property name="hibernate.hbm2ddl.auto" value="create" />
+
+			<!-- 
+				JPAによって発行されるSQL文をログ出力する設定
+			 -->
+			<property name="hibernate.show_sql" value="true" />
+
+
+        	<!-- 
+        		トランザクションと同様にJavaSE環境で動作するアプリケーションが
+        		JPAを使用する場合は、データベース接続の管理もアプリケーション側
+        		で行う必要がある。
+        		
+        		このため、
+        		・hibernate.connection.urlでデータベースへの接続URLを、
+        		・hibernate.dialectで接続するデータベースサーバの種類を、
+        		・hibernate.connection.driver_classでJDBCドライバのクラス名を
+        		それぞれ指定する。
+        	-->
+			<property name="hibernate.connection.url" value="jdbc:derby://localhost:1527/BeginningJavaEE6Chapter04;create=true" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.DerbyDialect"></property>
+			<property name="hibernate.connection.driver_class" value="org.apache.derby.jdbc.ClientDriver" />
+		</properties>
+	</persistence-unit>
+</persistence>

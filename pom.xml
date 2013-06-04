@@ -1,0 +1,130 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.beginningee6.book</groupId>
+	<artifactId>beginningee6-chapter04</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>beginningee6-chapter04</name>
+	<url>http://maven.apache.org</url>
+
+	<!-- 
+		コンパイルされるソースコードのエンコーディング形式の前提として
+		UTF-8を設定する
+	 -->
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<build>
+		<plugins>
+			<!-- 
+				maven-compiler-plugin
+				
+				MavenでJavaソースコードのコンパイルを実行するために
+				必要なプラグイン。
+				
+				Java SE 1.6に準拠したソースコードとしてコンパイルし、
+				java SE 1.6のJava VMで動作する中間コードを生成する
+				ように設定する
+			 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.0</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<!-- 
+		作成したソースコードやテストコードをコンパイル、実行するために
+		必要となるライブラリを依存関係として設定する。
+	 -->
+	<dependencies>
+		<!--	================================================= 
+			1．JUnitによるユニットテストを行うためのライブラリ設定 
+				================================================= -->
+		<!-- 
+			JUnit
+			
+			テスト時にのみ必要なライブラリのため、scopeはtestとする
+		-->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- 	================================================= 
+			2．プログラムをコンパイル・動作させるためのライブラリ設定 
+				================================================= -->
+		<!-- 
+			JPAのAPIおよび実装
+
+			JPAのAPIおよび実装として、hibernate-entitymanagerと
+			hibernate-coreライブラリをワンセットで指定する。
+
+			Arquillianによるインコンテナテストでは、アプリケーション
+			サーバであるJBossにJPAの実装が含まれているため、プログラム
+			をコンパイルする目的のみでJPAのAPIのみを依存関係として
+			指定すれば十分である。
+			
+			一方で、JavaSE環境でJPAを使用するこのプロジェクトのテスト
+			コードは、アプリケーションサーバ上で動作するものではないため、
+			JPAの実装ライブラリも動作環境として用意する必要がある。
+
+			テストに限らず、JPAのコードが動作するためには常に必要となる
+			ライブラリであるため、scopeはcompleとする。
+		-->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>4.2.0.Final</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>4.2.0.Final</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- 	================================================= 
+			3．JavaSE環境でJPA用にDB接続を行うためのライブラリ設定 
+				================================================= -->
+		<!-- 
+			Apache Derby用JDBCドライバ
+			
+			JavaSE環境でJPAが実際のデータベースに接続するために必要となる
+			JDBCドライバ。
+			テスト時にのみ必要なライブラリのため、scopeはtestとする。
+			
+			Arquillianによるインコンテナテストでは、アプリケーション
+			サーバであるJBossにApache Derby用JDBCドライバを組み入れて
+			JDBCデータソースを作成することによりデータベース接続を
+			抽象化しているため、クライアントが直接JDBCドライバを
+			必要とすることは無かった。
+			
+			一方で、JavaSE環境でJPAを使用するこのプロジェクトのテスト
+			コードは、アプリケーションサーバ上で動作するものではないため、
+			JPAが必要とするJDBCドライバをクライアント側で用意する必要がある。
+			
+			テスト時にのみ必要なライブラリのため、scopeはtestとする。
+		 -->
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbyclient</artifactId>
+			<version>10.9.1.0</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
